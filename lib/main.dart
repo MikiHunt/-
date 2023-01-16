@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:app006_2/page2.dart';
+import 'package:app006_2/quiz.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/second':(context) => const Page2(),
+        '/quiz':(context) => const Quiz(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -110,6 +112,10 @@ class _MainPageState extends State<MainPage> {
                 gotopage2(context);
               }, 
               child: Text("หน้าถัดไป",style: TextStyle(color: Colors.amber[200]),)),
+              ElevatedButton(onPressed: () {
+                goquiz(context);
+              }, 
+              child: Text("หน้าควิช",style: TextStyle(color: Colors.amber[200]),)),
             ],
           ),
         ),
@@ -147,17 +153,33 @@ class _MainPageState extends State<MainPage> {
     Navigator.push(
       context, 
       PageRouteBuilder(
-        pageBuilder: ((
-          context, 
-          animation, 
-          secondaryAnimation) {
+        pageBuilder: ((context,animation,secondaryAnimation) {
         return const Page2();
       }),
-      transitionsBuilder: (
-        context, 
-        animation, 
-        secondaryAnimation, 
-        child) {
+      transitionsBuilder: (context,animation,secondaryAnimation,child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0.0, 1.0),
+            end: const Offset(0.0, 0.0),
+        ).animate(
+          CurvedAnimation(
+            parent: animation, 
+            curve: Curves.easeOutQuint)),
+              child: child,
+        );
+      },
+      transitionDuration: const Duration(seconds: 3),
+      )
+    );
+  }
+  void goquiz(BuildContext context){
+    Navigator.push(
+      context, 
+      PageRouteBuilder(
+        pageBuilder: ((context,animation,secondaryAnimation) {
+        return const Quiz();
+      }),
+      transitionsBuilder: (context,animation,secondaryAnimation,child) {
         return SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(0.0, 1.0),
